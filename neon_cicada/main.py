@@ -8,9 +8,9 @@ from PyQt6.QtGui import QPixmap, QImage, QFont
 from PyQt6.QtCore import Qt
 from PIL import Image, ImageDraw, ImageFont
 
-with open('neon_cicada/data/encodings.pkl', 'rb') as f:
+with open('data/encodings.pkl', 'rb') as f:
     encodings = pickle.load(f)
-with open('neon_cicada/data/train_labels.pkl', 'rb') as f:
+with open('data/train_labels.pkl', 'rb') as f:
     labels = pickle.load(f)
 
 area = lambda x: (x[:, 2] - x[:, 0]) * (x[:, 1] - x[:, 3])
