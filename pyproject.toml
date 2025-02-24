@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "neon-cicada-ai"
+version = "0.1.0"
+description = ""
+authors = ["maxim <themain@gmai.com>"]
+readme = "README.md"
+packages = [{include = "neon_cicada"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
