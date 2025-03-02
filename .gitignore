@@ -1,3 +1,5 @@
 config.py
 neon_cicada/model.pt
 neon_cicada/yolo11x.pt
+.vscode
+out.txt
