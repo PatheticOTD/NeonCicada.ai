@@ -14,7 +14,8 @@ labels_path = 'data/train_labels.pkl'
 face_net = model.FaceNetModel(encodings_path = encodings_path,
                                  labels_path = labels_path)
 arc_face = model.ArcFaceModel(encodings_path = encodings_path_arc,
-                                 labels_path = labels_path_arc)
+                                 labels_path = labels_path_arc,
+                                 yolo_model_path="src/models/model.pt")
 app = QApplication(sys.argv)
 window = ui.ImageUploaderApp(model = arc_face)
 window.show()
