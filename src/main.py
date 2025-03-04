@@ -1,5 +1,5 @@
 import sys
-import models.model as model
+import src.models.model as model
 import ui
 import os
 
