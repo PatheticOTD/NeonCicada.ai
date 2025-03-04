@@ -219,7 +219,7 @@ class ArcFaceModel():
         
         if filter[0] != -1:
             return [self.labels[filter[0]]]
-        else: return filter
+        else: return ['Unknown']
     
 if __name__ == '__main__':
     test = ArcFaceModel()
