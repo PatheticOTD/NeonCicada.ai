@@ -85,7 +85,7 @@ class FaceNetModel():
         
         return 0
             
-    def predict(self, img_path = 'data/validate/Hugh Jackman/Hugh Jackman17293.jpg'):
+    def predict(self, img_path, threshold):
         
         image = face_recognition.load_image_file(img_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -99,7 +99,7 @@ class FaceNetModel():
         image = cv2.resize(image,(self.img_size, self.img_size))
         
         encoding = face_recognition.face_encodings(image, known_face_locations=[(0, self.img_size, self.img_size, 0)])[0]
-        filter = face_recognition.compare_faces(self.encodings, encoding, tolerance=0.5)
+        filter = face_recognition.compare_faces(self.encodings, encoding, tolerance=threshold)
         
         if sum(filter) > 0:
             return self.labels[filter][0]
@@ -116,7 +116,7 @@ class ArcFaceModel():
             with open(labels_path, 'rb') as f:
                 self.labels = pickle.load(f)
         self.img_size = img_size
-        self.model = YOLO(yolo_model_path)
+        self.model = YOLO(yolo_model_path, verbose=False)
         self.app = FaceAnalysis(name='buffalo_l', 
                    allowed_modules=['detection', 'recognition'], 
                    providers=['CPUExecutionProvider'], 
@@ -223,10 +223,10 @@ class ArcFaceModel():
         else:
             return (-1, best_similarity)
     
-    def predict(self, img_path):
+    def predict(self, img_path, threshold):
         image = cv2.imread(img_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        results = self.model.predict(image, conf=0.7)
+        results = self.model.predict(image, conf=0.6, verbose=False)
         
         max_area = 0
         closest_face = None
@@ -255,7 +255,7 @@ class ArcFaceModel():
         face = cv2.resize(face, (self.img_size, self.img_size))
         encoding = self.app.get(face)[0].embedding
         
-        filter = self.compare_faces(encoding, threshold=.3)
+        filter = self.compare_faces(encoding, threshold=threshold)
         
         if filter[0] != -1:
             return [self.labels[filter[0]]]
