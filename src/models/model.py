@@ -7,11 +7,13 @@ import face_recognition
 from ultralytics import YOLO
 from insightface.app import FaceAnalysis
 
+from config import Config
+
 area = lambda x: (x[:, 2] - x[:, 0]) * (x[:, 1] - x[:, 3])
 
 
 class FaceNetModel():
-    def __init__(self, yolo_model_path = 'models/yolo_model.pt', encodings_path = None, labels_path = None, img_size = 256):
+    def __init__(self, yolo_model_path=Config.yolo_model_path, encodings_path = None, labels_path = None, img_size = 256):
         self.encodings = None
         self.labels = None
         self.img_size = img_size
@@ -76,16 +78,16 @@ class FaceNetModel():
         images = np.array(images)
         self.labels = np.array(self.labels)
         self.encodings = np.array(self.encodings)
-        with open('../data/train_imgs(facenet).pkl', 'wb') as f:
+        with open(f'../{Config.train_imgs_facenet}', 'wb') as f:
             pickle.dump(images, f)
-        with open('../data/train_labels(facenet).pkl', 'wb') as f:
+        with open(f'../{Config.train_labels_facenet}', 'wb') as f:
             pickle.dump(self.labels, f)
-        with open('../data/encodings(facenet).pkl', 'wb') as f:
+        with open(f'../{Config.encodings_facenet}', 'wb') as f:
             pickle.dump(self.encodings, f)
         
         return 0
             
-    def predict(self, img_path = 'data/validate/Hugh Jackman/Hugh Jackman17293.jpg'):
+    def predict(self, img_path = Config.img_path_test):
         
         image = face_recognition.load_image_file(img_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -177,11 +179,11 @@ class ArcFaceModel():
         self.labels = np.array(self.labels)
         self.encodings = np.array(self.encodings)
         
-        with open('../data/train_imgs(arcface).pkl', 'wb') as f:
+        with open(f'../{Config.train_imgs_arc}', 'wb') as f:
             pickle.dump(images, f)
-        with open('../data/train_labels(arcface).pkl', 'wb') as f:
+        with open(f'../{Config.labels_path_arc}', 'wb') as f:
             pickle.dump(self.labels, f)
-        with open('../data/encodings(arcface).pkl', 'wb') as f:
+        with open(f'../{Config.encodings_path_arc}', 'wb') as f:
             pickle.dump(self.encodings, f)
                     
     def compare_faces(self, query_emb, threshold=0.65):

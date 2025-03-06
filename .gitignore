@@ -1,4 +1,3 @@
-neon_cicada/model.pt
-neon_cicada/yolo11x.pt
 .vscode
-out.txt
+src/__pycache__
+src/models/__pycache__
