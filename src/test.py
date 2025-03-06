@@ -8,14 +8,10 @@ from PyQt6.QtGui import QPixmap, QImage, QFont
 from PyQt6.QtCore import Qt
 from PIL import Image, ImageDraw, ImageFont
 
-with open('data/encodings.pkl', 'rb') as f:
-    encodings = pickle.load(f)
-with open('data/train_labels.pkl', 'rb') as f:
-    labels = pickle.load(f)
+from config import Config
 
-area = lambda x: (x[:, 2] - x[:, 0]) * (x[:, 1] - x[:, 3])
 
-def check_image(img_path = 'data/validate/Hugh Jackman/Hugh Jackman17293.jpg'):
+def check_image(img_path = Config.img_path_test):
     image = face_recognition.load_image_file(img_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     coords = np.array(face_recognition.face_locations(image))
@@ -105,6 +101,14 @@ class ImageUploaderApp(QWidget):
             self.output_field.append(number)
 
 if __name__ == "__main__":
+    
+    with open(Config.data_encodings, 'rb') as f:
+        encodings = pickle.load(f)
+    with open(Config.data_train_labels, 'rb') as f:
+        labels = pickle.load(f)
+
+    area = lambda x: (x[:, 2] - x[:, 0]) * (x[:, 1] - x[:, 3])
+        
     app = QApplication(sys.argv)
     window = ImageUploaderApp()
     window.show()
