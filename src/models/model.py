@@ -6,7 +6,7 @@ import numpy as np
 import face_recognition
 from ultralytics import YOLO
 from insightface.app import FaceAnalysis
-
+from sklearn.neighbors import KDTree
 from config import Config
 
 area = lambda x: (x[:, 2] - x[:, 0]) * (x[:, 1] - x[:, 3])
@@ -104,7 +104,7 @@ class FaceNetModel():
         filter = face_recognition.compare_faces(self.encodings, encoding, tolerance=threshold)
         
         if sum(filter) > 0:
-            return self.labels[filter][0]
+            return self.labels[filter][[0]]
         else: return ['Unknown']
         
 class ArcFaceModel():
@@ -121,7 +121,7 @@ class ArcFaceModel():
         self.model = YOLO(yolo_model_path, verbose=False)
         self.app = FaceAnalysis(name='buffalo_l', 
                    allowed_modules=['detection', 'recognition'], 
-                   providers=['CPUExecutionProvider'], 
+                   providers=['CUDAExecutionProvider'], #CPUExecutionProvider
                    det_thresh=0.5)  # Use 'CUDAExecutionProvider' for GPU
         self.app.prepare(ctx_id=-1, det_size=(img_size, img_size))
         
